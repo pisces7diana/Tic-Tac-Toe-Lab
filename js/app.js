@@ -42,11 +42,9 @@ console.log(messageEl)
 
 /*-------------------------------- Functions --------------------------------*/
 function init() {
-    board[0] = ''
-    board[1] = ''
-    board[2] = ''
-    board[3] = ''
 
+
+  console.log('Initialization started')
   render()
 
 }
@@ -62,31 +60,27 @@ function render() {
 
 function updateBoard (board) {
     squareEls.forEach( (square, index) => {
-        square.textContent = board[index]
+        board[index] = square.textContent // turn
     
     })
 }
 
-// updateBoard(board)
-
-
 function updateMessage () {
+
     if(!winner && !tie) {
         messageEl.textContent = `It's ${turn}'s turn`
     } else if (!winner && tie) {
-        messageEl.textContent = "It's a tie"
+        messageEl.textContent =  "It's a tie"
     } else {
         messageEl.textContent = ` ${turn} won!`
     }
 }
 
-// updateMessage()
-
 function handleClick (event) {
 
     const squareIndex = event.target.id// event.target is the div
 
-    if (board[squareIndex] === 'X' || board[squareIndex] === 'O'){
+    if (board[squareIndex] === 'X' || board[squareIndex] === 'O' || winner ) {
         return
     }
 
@@ -95,8 +89,9 @@ function handleClick (event) {
     event.target.innerText = turn
 
     checkForWinner()
-
     checkForTie ()
+
+    updateMessage()
 
     switchPlayerTurn()
 
@@ -109,15 +104,37 @@ function placePiece (index) {
 }
 
 function checkForWinner () {
-    winningCombos.forEach(combo => {
-        const [a,b,c] = combo
+    // winningCombos.forEach(combo => {
+    //     const [a,b,c] = combo
 
-        if(board[a] !== '' && board[a] === board [b] && board[a] === board[c]) {
+        // const winningCombos = [
+        //     [0, 1, 2],
+        //     [3, 4 ,5],
+        //     [6, 7, 8],
+        //     [0, 3, 6],
+        //     [1, 4, 7],
+        //     [2, 5, 8],
+        //     [0, 4, 8],
+        //     [2, 4, 6]
+        
+        // ]
+
+    for (let combo of winningCombos) {
+
+        let [idx1, idx2, idx3] = combo;
+        let value1 = board[idx1];
+        let value2 = board[idx2];
+        let value3 = board[idx3];
+    
+
+
+        if(value1 !== '' && value1 === value2 && value2 === value3) {
             winner = true
         }
 
-        console.log(winner)
-    })
+    console.log(winner)
+
+    }
 }
 
 function checkForTie () {
@@ -129,18 +146,20 @@ function checkForTie () {
     for (let i = 0; i < board.length; i++) {
         if (board[i] === '') {
             tie = false;
-        } else {
-            tie = true
+            return
         }
-        console.log(tie)
     }
 
+    tie = true
+    console.log(tie)
+
 }
+
 
 function switchPlayerTurn () {
     if (winner) {
         return
-    } 
+    }
     
     if (!winner) {
         if (turn === 'X') {
@@ -148,9 +167,12 @@ function switchPlayerTurn () {
         } else if (turn === 'O') { 
             turn = 'X'
         }
-        console.log(turn)
+       
+    console.log(turn)
 
-}
+    updateMessage()
+
+    }
 }
 
 /*----------------------------- Event Listeners -----------------------------*/
