@@ -29,8 +29,8 @@ const board = [
     '', '', '',
 ]
 let turn = 'X'
-let winner = true
-let tie = true
+let winner = false
+let tie = false
 
 
 /*------------------------ Cached Element References ------------------------*/
@@ -94,7 +94,6 @@ function handleClick (event) {
 
     event.target.innerText = turn
 
-
     checkForWinner()
 
     checkForTie ()
@@ -114,29 +113,45 @@ function checkForWinner () {
         const [a,b,c] = combo
 
         if(board[a] !== '' && board[a] === board [b] && board[a] === board[c]) {
-            console.log(winner)
+            winner = true
         }
+
+        console.log(winner)
     })
 }
 
 function checkForTie () {
-    if (checkForWinner) {
+    const winner = checkForWinner()
+    if (winner) {
         return
     }
-    console.log(tie)
-}
 
+    for (let i = 0; i < board.length; i++) {
+        if (board[i] === '') {
+            tie = false;
+        } else {
+            tie = true
+        }
+        console.log(tie)
+    }
+
+}
 
 function switchPlayerTurn () {
     if (winner) {
         return
-    } else {
-    turn = turn === 'X' ? 'O' : 'X';
-    }
+    } 
     
-    console.log(turn)
-}
+    if (!winner) {
+        if (turn === 'X') {
+            turn = 'O'
+        } else if (turn === 'O') { 
+            turn = 'X'
+        }
+        console.log(turn)
 
+}
+}
 
 /*----------------------------- Event Listeners -----------------------------*/
 
