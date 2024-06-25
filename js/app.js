@@ -23,6 +23,7 @@ const winningCombos = [
 ]
 
 /*---------------------------- Variables (state) ----------------------------*/
+
 const board = [
     '', '', '',
     '', '', '',
@@ -32,20 +33,27 @@ let turn = 'X'
 let winner = false
 let tie = false
 
-
 /*------------------------ Cached Element References ------------------------*/
 const squareEls = document.querySelectorAll('.sqr')
 console.log(squareEls)
 const messageEl = document.querySelector('#message')
 console.log(messageEl)
+const resetBtnEl = document.querySelector('#reset')
+console.log(resetBtnEl)
 
 
 /*-------------------------------- Functions --------------------------------*/
 function init() {
 
+//   console.log('Initialization started')
+    squareEls.forEach(square => {
+        square.textContent = '';
+    });
+    turn = 'X'
+    winner= false
+    tie = false
 
-  console.log('Initialization started')
-  render()
+    render()
 
 }
 
@@ -155,7 +163,6 @@ function checkForTie () {
 
 }
 
-
 function switchPlayerTurn () {
     if (winner) {
         return
@@ -180,3 +187,5 @@ function switchPlayerTurn () {
 squareEls.forEach(sqr => {
     sqr.addEventListener('click', handleClick)
 })
+
+resetBtnEl.addEventListener('click', init)
